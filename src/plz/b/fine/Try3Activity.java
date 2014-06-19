@@ -46,6 +46,7 @@ public class Try3Activity extends Activity {
 	        btnCapturePicture2 = (Button) findViewById(R.id.btnCapturePicture2);
 	        btnCapturePicture3 = (Button) findViewById(R.id.btnCapturePicture3);
 	        done_obj=(Button)findViewById(R.id.done);
+	        //Toast.makeText(this, "click pics in order", Toast.LENGTH_LONG).show();
 	 
 	        /**
 	         * Capture image button click event
@@ -59,22 +60,30 @@ public class Try3Activity extends Activity {
 	                temp2=temp2.substring(7);
 	               
 	                s[0]=temp2;
+	                fileUri=null;
 	                if(i==0)
 	                i++;
 	            }
 	        });
 	        
+	        
 	        btnCapturePicture2.setOnClickListener(new View.OnClickListener() {
 	       	 
 	            public void onClick(View v) {
 	                // capture picture
+	            	if(i>=1)
+	            	{
 	                captureImage();
 	                String temp2=fileUri.toString();
 	                temp2=temp2.substring(7);
 	               
 	                s[1]=temp2;
+	                fileUri=null;
 	                if(i==1)
 	                i++;
+	            	}
+	            	else
+	            		toast_func();
 	            }
 	        });
 	        
@@ -82,13 +91,19 @@ public class Try3Activity extends Activity {
 	       	 
 	            public void onClick(View v) {
 	                // capture picture
+	            	if(i>=2)
+	            	{
 	                captureImage();
 	                String temp2=fileUri.toString();
 	                temp2=temp2.substring(7);
 	               
 	                s[2]=temp2;
+	                fileUri=null;
 	                if(i==2)
 	                i++;
+	            	}
+	            	else
+	            		toast_func();
 	            }
 	        });
 	        
@@ -102,6 +117,8 @@ public class Try3Activity extends Activity {
 					
 				}
 			});
+	        
+	       
 	 
 	        /**
 	         * Record video button click event
@@ -111,7 +128,7 @@ public class Try3Activity extends Activity {
 	        if (!isDeviceSupportCamera()) {
 	            Toast.makeText(getApplicationContext(),
 	                    "Sorry! Your device doesn't support camera",
-	                    Toast.LENGTH_LONG).show();
+	                    Toast.LENGTH_SHORT).show();
 	            // will close the app if the device does't have camera
 	            finish();
 	        }
@@ -121,6 +138,8 @@ public class Try3Activity extends Activity {
 	     * Checking device has camera hardware or not
 	     * */
 	    private void check(){
+	    	if(i!=0)
+	    	{
 	    	String temp=Environment
                     .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+"/"+ IMAGE_DIRECTORY_NAME+"/file.zip";
 	    	Toast.makeText(this, temp,Toast.LENGTH_SHORT ).show();
@@ -128,6 +147,10 @@ public class Try3Activity extends Activity {
 			Compress c =new Compress(s,temp,i);   //first parameter is d files second parameter is zip file name
 		    c.zip();    //call the zip function
 	    	Toast.makeText(this, "compressed",Toast.LENGTH_SHORT ).show();
+	    	}
+	    	else
+	    		Toast.makeText(this, "click pictures",Toast.LENGTH_SHORT ).show();
+	    		
 	    }
 	    
 	    private boolean isDeviceSupportCamera() {
@@ -140,6 +163,11 @@ public class Try3Activity extends Activity {
 	            return false;
 	        }
 	    }
+	    
+	    public void toast_func(){
+        	Toast.makeText(this, "click previous pictures", Toast.LENGTH_SHORT).show();
+        }
+        
 	 
 	    /**
 	     * Capturing Camera Image will lauch camera app requrest image capture
@@ -160,6 +188,7 @@ public class Try3Activity extends Activity {
 	     * Here we store the file url as it will be null after returning from camera
 	     * app
 	     */
+	    /*
 	    @Override
 	    protected void onSaveInstanceState(Bundle outState) {
 	        super.onSaveInstanceState(outState);
@@ -176,10 +205,8 @@ public class Try3Activity extends Activity {
 	        // get the file url
 	        fileUri = savedInstanceState.getParcelable("file_uri");
 	    }
-	 
-	    /**
-	     * Recording video
-	     */
+	 */
+	    
 	   
 	    /**
 	     * Receiving activity result method will be called after closing the camera
@@ -189,7 +216,7 @@ public class Try3Activity extends Activity {
 	        // if the result is capturing Image
 	        if (requestCode == CAMERA_CAPTURE_IMAGE_REQUEST_CODE) {
 	            if (resultCode == RESULT_OK) {
-	                Toast.makeText(this, "Image saved" , Toast.LENGTH_LONG).show();
+	                Toast.makeText(this, "Image saved" , Toast.LENGTH_SHORT).show();
 
 	                // successfully captured the image
 	                // display it in image view
